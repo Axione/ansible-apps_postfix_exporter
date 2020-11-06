@@ -1,0 +1,18 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=Prometheus postfix Exporter
+After=network-online.target
+StartLimitInterval=0
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/usr/local/bin/postfix_exporter --web.listen-address ":{{ postfix_exporter_listen_port }}" --postfix.logfile_path "{{ postfix_exporter_logfile }}"
+ExecReload=/bin/kill -HUP $MAINPID
+SyslogIdentifier=postfix_exporter
+RestartSec=1
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target

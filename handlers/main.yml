@@ -1,5 +1,5 @@
 ---
-- name: "restart squid_exporter"
+- name: "restart postfix_exporter"
   service:
-    name: "squid_exporter"
+    name: "postfix_exporter"
     state: "restarted"

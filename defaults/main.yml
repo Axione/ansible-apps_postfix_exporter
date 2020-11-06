@@ -1,6 +1,5 @@
 ---
-squid_exporter_version:   "1.9.1"
-squid_exporter_url:       "https://github.com/boynux/squid-exporter/releases/download/v{{ squid_exporter_version }}/squid-exporter"
-squid_exporter_squid_host: localhost
-squid_exporter_squid_port: 3128
-squid_exporter_listen_port: "9103"
+postfix_exporter_version:     "0.3.0"
+postfix_exporter_url:         "https://github.com/lotusnoir/prometheus-postfix_exporter/releases/download/{{ postfix_exporter_version }}/postfix_exporter"
+postfix_exporter_logfile:     '/var/log/mail.log'
+postfix_exporter_listen_port: "9124"
