@@ -1,5 +1,10 @@
 ---
+# Binary install
 postfix_exporter_version:     "0.3.0"
 postfix_exporter_url:         "https://github.com/lotusnoir/prometheus-postfix_exporter/releases/download/{{ postfix_exporter_version }}/postfix_exporter"
-postfix_exporter_logfile:     '/var/log/mail.log'
+postfix_exporter_install_dir: "/usr/local/bin"
+postfix_exporter_force_install: false
+
+# Systemd options
+postfix_exporter_logfile:     "/var/log/mail.log"
 postfix_exporter_listen_port: "9124"

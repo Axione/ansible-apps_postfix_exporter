@@ -8,7 +8,7 @@ StartLimitInterval=0
 [Service]
 Type=simple
 Restart=always
-ExecStart=/usr/local/bin/postfix_exporter --web.listen-address ":{{ postfix_exporter_listen_port }}" --postfix.logfile_path "{{ postfix_exporter_logfile }}"
+ExecStart={{ postfix_exporter_install_dir }}/postfix-exporter --web.listen-address ":{{ postfix_exporter_listen_port }}" --postfix.logfile_path "{{ postfix_exporter_logfile }}"
 ExecReload=/bin/kill -HUP $MAINPID
 SyslogIdentifier=postfix_exporter
 RestartSec=1

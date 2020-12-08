@@ -1,23 +1,30 @@
 ---
+- name: "End play if distribution not suported"
+  meta: end_host
+  when:
+    - ansible_distribution != "Debian"
+    - ansible_distribution != "Ubuntu"
+    - ansible_distribution != "CentOS"
+
 - name: "Check for postfix_exporter binary"
   stat:
-    path: "/usr/local/bin/postfix_exporter"
+    path: "{{ postfix_exporter_install_dir }}/postfix-exporter"
   changed_when: false
   register: postfix_exporter_install
 
-- when: not postfix_exporter_install.stat.exists
+- when: not postfix_exporter_install.stat.exists or postfix_exporter_force_install|bool
   block:
     - name: "Download postfix_exporter..."
       get_url:
         url: '{{ postfix_exporter_url }}'
-        dest: /usr/local/bin/postfix_exporter
-        timeout: 120
-        mode: 0755
+        dest: '{{ postfix_exporter_install_dir }}/postfix-exporter'
+        timeout: 60
+        mode: '0755'
 
 - name: "Create systemd for postfix_exporter"
   template:
-    src: postfix_exporter.service.j2
-    dest: /etc/systemd/system/postfix_exporter.service
+    src: 'postfix_exporter.service.j2'
+    dest: '/etc/systemd/system/postfix_exporter.service'
     mode: '0644'
   notify: "restart postfix_exporter"
 

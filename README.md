@@ -11,6 +11,8 @@ Deploy [postfix_exporter](https://github.com/boynux/postfix-exporter) to expose 
 | Name           | Default Value | Description                        |
 | -------------- | ------------- | -----------------------------------|
 | `postfix_exporter_version` | 0.3.0 | postfix_exporter version |
+| `postfix_exporter_install_dir` | /usr/local/bin | directory to install binary |
+| `postfix_exporter_force_install` | false | force install variable |
 | `postfix_exporter_logfile` | /var/log/mail.log | path to postfix logs |
 | `postfix_exporter_listen_port` | 9124 | port to expose prometheus metrics |
 
@@ -30,4 +32,4 @@ Deploy [postfix_exporter](https://github.com/boynux/postfix-exporter) to expose 
 
 ## License
 
-This project is licensed under MIT License. See [LICENSE](/LICENSE) for more details.
+This project is licensed under Apache License. See [LICENSE](/LICENSE) for more details.
