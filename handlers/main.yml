@@ -1,5 +1,5 @@
 ---
 - name: "restart postfix_exporter"
-  service:
+  ansible.builtin.service:
     name: "postfix_exporter"
     state: "restarted"
