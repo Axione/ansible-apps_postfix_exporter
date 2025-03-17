@@ -1,7 +1,7 @@
 ---
 - name: "Check for postfix_exporter binary"
   ansible.builtin.stat:
-    path: "{{ postfix_exporter_install_dir }}/postfix-exporter"
+    path: "{{ postfix_exporter_install_dir }}/postfix_exporter"
   changed_when: false
   register: postfix_exporter_install
 
@@ -10,21 +10,49 @@
   block:
     - name: "Install requierements"
       ansible.builtin.package:
-        name: "ca-certificates"
+        name: ["ca-certificates", "unzip", "tar"]
         state: present
 
     - name: "Download postfix_exporter..."
       ansible.builtin.get_url:
-        url: '{{ postfix_exporter_url }}'
-        dest: '{{ postfix_exporter_install_dir }}/postfix-exporter'
-        timeout: 60
-        mode: '0755'
+        url: "{{ postfix_exporter_tgz_url }}"
+        dest: "{{ postfix_exporter_temp_dir }}/{{ postfix_exporter_tgz }}"
+        timeout: "60"
+        mode: "0644"
+
+    - name: "Ensure install dir exists"
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: "0755"
+      with_items:
+        - "{{ postfix_exporter_install_dir }}"
+        - "{{ postfix_exporter_temp_dir }}/postfix_exporter"
+
+    - name: "Unarchive postfix_exporter..."
+      ansible.builtin.unarchive:
+        src: "{{ postfix_exporter_temp_dir }}/{{ postfix_exporter_tgz }}"
+        dest: "{{ postfix_exporter_temp_dir }}/postfix_exporter"
+        remote_src: true
+        mode: "0644"
+
+    - name: "Copy postfix_exporter binary..."
+      ansible.builtin.copy:
+        src: "{{ postfix_exporter_temp_dir }}/postfix_exporter/postfix_exporter"
+        dest: "{{ postfix_exporter_install_dir }}/postfix_exporter"
+        remote_src: true
+        mode: "0755"
+
+    - name: "Remove temporary directory"
+      ansible.builtin.file:
+        path: "{{ postfix_exporter_temp_dir }}/postfix_exporter"
+        state: absent
 
 - name: "Create systemd for postfix_exporter"
   ansible.builtin.template:
-    src: 'postfix_exporter.service.j2'
-    dest: '/etc/systemd/system/postfix_exporter.service'
-    mode: '0644'
+    src: "postfix_exporter.service.j2"
+    dest: "/etc/systemd/system/postfix_exporter.service"
+    mode: "0644"
   notify: "Restart postfix_exporter"
 
 - name: "Enable and Start postfix_exporter.service"
