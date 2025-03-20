@@ -9,6 +9,7 @@ StartLimitInterval=0
 Type=simple
 Restart=always
 ExecStart={{ postfix_exporter_install_dir }}/postfix_exporter \
+      --config.file={{ postfix_exporter_config_file }} \
       --collector={{ postfix_exporter_collector }} \
       --postfix.instance="{{ postfix_exporter_instance_name }}" \
       --file.log="{{ postfix_exporter_file_log }}" \

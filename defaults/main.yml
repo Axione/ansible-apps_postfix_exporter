@@ -8,6 +8,14 @@ postfix_exporter_install_dir: "/usr/local/bin"
 postfix_exporter_force_install: false
 
 # Systemd options
+postfix_exporter_config_file: "/etc/postfix/postfix_exporter.yml"
+postfix_exporter_config_content: |
+  status_replies:
+  - statuses:
+      - sent
+    regexp: 2\.5\.0
+    match: enhanced_code
+    text: sent
 postfix_exporter_collector: "file"
 postfix_exporter_instance_name: "postfix"
 postfix_exporter_file_log: "/var/log/postfix.log"
